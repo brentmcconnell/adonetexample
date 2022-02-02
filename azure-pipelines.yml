@@ -50,3 +50,21 @@ steps:
     arguments: '--configuration $(buildConfiguration) --output "$(build.artifactstagingdirectory)/FunctionalTests"'
     zipAfterPublish: false
     modifyOutputPath: false
+
+- task: CopyFiles@2
+  displayName: 'Copy runsettings file'
+  inputs:
+    Contents: '**/*.runsettings'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/FunctionalTests'
+    flattenFolders: true
+
+- task: CopyFiles@2
+  displayName: 'Copy ARM templates'
+  inputs:
+    SourceFolder: ArmTemplates
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
