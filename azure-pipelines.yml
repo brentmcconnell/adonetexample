@@ -38,10 +38,9 @@ steps:
     SourceFolder: ArmTemplates
     TargetFolder: '$(build.artifactstagingdirectory)'
 
-- task: PublishBuildArtifacts@1
+- publish: $(build.artifactstagingdirectory)
   displayName: 'Publish Artifact'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
+  artifact: adonetexample
 
 - script: |
     ls -la $(build.artifactstagingdirectory)
