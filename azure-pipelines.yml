@@ -32,7 +32,7 @@ stages:
     - script: | 
         cd $(build.artifactstagingdirectory)
         ls -la
-        zip -qq -r Application.zip *
+        zip -r Application.zip .
         zip -l Application.zip
         cp Application.zip $(build.artifactstagingdirectory)
       displayName: Archive Application
