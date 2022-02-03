@@ -23,22 +23,13 @@ steps:
     dotnet build --configuration Release
     dotnet test aspnet-core-dotnet-core.UnitTests/aspnet-core-dotnet-core.UnitTests.csproj
     dotnet publish --configuration $(buildConfiguration) --output "$(build.artifactstagingdirectory)"
-
-- task: DotNetCoreCLI@2
-  displayName: 'Publish functional tests'
-  inputs:
-    command: publish
-    publishWebProjects: false
-    projects: '**/*FunctionalTest*.csproj'
-    arguments: '--configuration $(buildConfiguration) --output "$(build.artifactstagingdirectory)/FunctionalTests"'
-    zipAfterPublish: false
-    modifyOutputPath: false
+  displayName: 'dotnet build unit test and publish'
 
 - task: CopyFiles@2
   displayName: 'Copy runsettings file'
   inputs:
     Contents: '**/*.runsettings'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/FunctionalTests'
+    TargetFolder: '$(build.artifactstagingdirectory)/FunctionalTests'
     flattenFolders: true
 
 - task: CopyFiles@2
@@ -51,3 +42,8 @@ steps:
   displayName: 'Publish Artifact'
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
+
+- script: |
+    ls -la $(build.artifactstagingdirectory)
+  displayName: 'List Artifactstagingdirectory Contents'
+
