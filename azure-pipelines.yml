@@ -55,6 +55,6 @@ stages:
   jobs:
   - job: Deploy
     steps:
-    - download: none
+    - download: adonetexample
     - script: |
         ls -la $(pipeline.workspace)
