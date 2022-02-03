@@ -30,7 +30,8 @@ stages:
       displayName: 'dotnet build unit test and publish'
 
     - script: | 
-        zip -qq -r Application.zip $(build.artifactstagingdirectory)
+        cd Application
+        zip -qq -r Application.zip *
         cp Application.zip $(build.artifactstagingdirectory)
       displayName: Archive Application
 
