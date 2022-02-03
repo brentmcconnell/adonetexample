@@ -30,8 +30,7 @@ stages:
       displayName: 'dotnet build unit test and publish'
 
     - script: | 
-        ls -la
-        cd Application
+        cd $(build.artifactstagingdirectory)
         ls -la
         zip -qq -r Application.zip *
         zip -l Application.zip
