@@ -20,7 +20,7 @@ stages:
   - job: Build_Test_Publish
     steps:
     - task: NuGetToolInstaller@1
-
+    
     - script: |
         cd Application
         dotnet restore
@@ -29,6 +29,11 @@ stages:
         dotnet publish --configuration $(buildConfiguration) --output "$(build.artifactstagingdirectory)"
       displayName: 'dotnet build unit test and publish'
 
+    - script: | 
+        zip -qq -r Application.zip $(build.artifactstagingdirectory)
+      displayName: Archive Application
+
+        
     - task: CopyFiles@2
       displayName: 'Copy runsettings file'
       inputs:
@@ -67,9 +72,8 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          cd adonetexample
           az group create --name "adonetexample-rg" --location "eastus"
-          az deployment group create --resource-group "adonetexample-rg" --template-file ./deployment/linux-webapp-template.json --parameters webAppName="adonetexample" hostingPlanName="adonetexample-plan" appInsightsLocation="eastus" sku="S1 Standard"
+          az deployment group create --resource-group "adonetexample-rg" --template-file $(pipeline.workspace)/deployment/linux-webapp-template.json --parameters webAppName="adonetexample" hostingPlanName="adonetexample-plan" appInsightsLocation="eastus" sku="S1 Standard"
     
     - task: AzureRmWebAppDeployment@4
       inputs:
@@ -77,5 +81,5 @@ stages:
         azureSubscription: 'adonetexample - Azure'
         appType: 'webAppLinux'
         WebAppName: 'adonetexample'
-        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+        packageForLinux: '$(pipeline.workspace)/**/*.zip'
         RuntimeStack: 'DOTNETCORE|3.1'
