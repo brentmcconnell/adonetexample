@@ -73,7 +73,7 @@ stages:
         scriptLocation: 'inlineScript'
         inlineScript: |
           az group create --name "adonetexample-rg" --location "eastus2"
-          az deployment group create --resource-group "adonetexample-rg" --template-file $(pipeline.workspace)/deployment/linux-webapp-template.json --parameters webAppName="adonetexample" hostingPlanName="adonetexample-plan" appInsightsLocation="eastus2" sku="S1 Standard"
+          az deployment group create --resource-group "adonetexample-rg" --template-file $(pipeline.workspace)/adonetexample/deployment/linux-webapp-template.json --parameters webAppName="adonetexample" hostingPlanName="adonetexample-plan" appInsightsLocation="eastus2" sku="S1 Standard"
     
     - task: AzureRmWebAppDeployment@4
       inputs:
