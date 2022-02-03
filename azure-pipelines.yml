@@ -55,5 +55,8 @@ stages:
   jobs:
   - job: Deploy
     steps:
+    - download: current
+      artifact: adonetexample
+      
     - script: |
         ls -la $(pipeline.workspace)
