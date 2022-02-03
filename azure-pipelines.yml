@@ -34,7 +34,6 @@ stages:
         ls -la
         zip -r Application.zip .
         zip -l Application.zip
-        cp Application.zip $(build.artifactstagingdirectory)
       displayName: Archive Application
 
         
