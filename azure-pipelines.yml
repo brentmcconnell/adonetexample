@@ -40,7 +40,7 @@ stages:
       displayName: 'Copy ARM templates'
       inputs:
         SourceFolder: ArmTemplates
-        TargetFolder: '$(build.artifactstagingdirectory)'
+        TargetFolder: '$(build.artifactstagingdirectory)/deployment'
 
     - publish: $(build.artifactstagingdirectory)
       displayName: 'Publish Artifact'
