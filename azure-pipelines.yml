@@ -14,35 +14,47 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-steps:
-- task: NuGetToolInstaller@1
+stages:
+- stage: Build
+  jobs:
+  - job: 'Build and Test'
+    steps:
+    - task: NuGetToolInstaller@1
 
-- script: |
-    cd Application
-    dotnet restore
-    dotnet build --configuration Release
-    dotnet test aspnet-core-dotnet-core.UnitTests/aspnet-core-dotnet-core.UnitTests.csproj
-    dotnet publish --configuration $(buildConfiguration) --output "$(build.artifactstagingdirectory)"
-  displayName: 'dotnet build unit test and publish'
+    - script: |
+        cd Application
+        dotnet restore
+        dotnet build --configuration Release
+        dotnet test aspnet-core-dotnet-core.UnitTests/aspnet-core-dotnet-core.UnitTests.csproj
+        dotnet publish --configuration $(buildConfiguration) --output "$(build.artifactstagingdirectory)"
+      displayName: 'dotnet build unit test and publish'
 
-- task: CopyFiles@2
-  displayName: 'Copy runsettings file'
-  inputs:
-    Contents: '**/*.runsettings'
-    TargetFolder: '$(build.artifactstagingdirectory)/FunctionalTests'
-    flattenFolders: true
+    - task: CopyFiles@2
+      displayName: 'Copy runsettings file'
+      inputs:
+        Contents: '**/*.runsettings'
+        TargetFolder: '$(build.artifactstagingdirectory)/FunctionalTests'
+        flattenFolders: true
 
-- task: CopyFiles@2
-  displayName: 'Copy ARM templates'
-  inputs:
-    SourceFolder: ArmTemplates
-    TargetFolder: '$(build.artifactstagingdirectory)'
+    - task: CopyFiles@2
+      displayName: 'Copy ARM templates'
+      inputs:
+        SourceFolder: ArmTemplates
+        TargetFolder: '$(build.artifactstagingdirectory)'
 
-- publish: $(build.artifactstagingdirectory)
-  displayName: 'Publish Artifact'
-  artifact: adonetexample
+    - publish: $(build.artifactstagingdirectory)
+      displayName: 'Publish Artifact'
+      artifact: adonetexample
 
-- script: |
-    ls -la $(build.artifactstagingdirectory)
-  displayName: 'List Artifactstagingdirectory Contents'
+    - script: |
+        ls -la $(build.artifactstagingdirectory)
+      displayName: 'List Artifactstagingdirectory Contents'
 
+- stage: Deploy
+  dependsOn: Build
+  jobs:
+  - job: 'Deploy'
+    steps:
+    - download: none
+    - script: |
+        ls -la $(pipeline.workspace)
