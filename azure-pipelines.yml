@@ -15,9 +15,9 @@ variables:
   buildConfiguration: 'Release'
 
 stages:
-- stage: Build
+- stage: Build_Test_Publish
   jobs:
-  - job: 'Build and Test'
+  - job: Build_Test_Publish
     steps:
     - task: NuGetToolInstaller@1
 
@@ -51,9 +51,9 @@ stages:
       displayName: 'List Artifactstagingdirectory Contents'
 
 - stage: Deploy
-  dependsOn: Build
+  dependsOn: Build_Test_Publish
   jobs:
-  - job: 'Deploy'
+  - job: Deploy
     steps:
     - download: none
     - script: |
