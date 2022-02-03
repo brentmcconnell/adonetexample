@@ -59,4 +59,4 @@ stages:
       artifact: adonetexample
       
     - script: |
-        ls -la $(pipeline.workspace)
+        ls -la $(pipeline.workspace)/adonetexample
