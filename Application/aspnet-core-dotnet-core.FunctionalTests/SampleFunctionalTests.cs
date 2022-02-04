@@ -4,6 +4,7 @@ using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Remote;
 using System;
 using System.Threading;
+using System.Runtime.InteropServices;
 
 namespace SampleWebApplication.FunctionalTests
 {
@@ -66,7 +67,11 @@ namespace SampleWebApplication.FunctionalTests
         {
             var path = Environment.GetEnvironmentVariable("ChromeWebDriver");
             var options = new ChromeOptions();
-            options.AddArguments("--no-sandbox");
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                options.AddArguments("--no-sandbox");
+            }
+            options.AddArgument("--headless");
 
             if (!string.IsNullOrWhiteSpace(path))
             {
@@ -82,7 +87,11 @@ namespace SampleWebApplication.FunctionalTests
         {
             var path = Environment.GetEnvironmentVariable("EdgeWebDriver");
             var options = new EdgeOptions();
-            options.AddArguments("--no-sandbox");
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                options.AddArguments("--no-sandbox");
+            }
+            options.AddArgument("--headless");
 
             if (!string.IsNullOrWhiteSpace(path))
             {
