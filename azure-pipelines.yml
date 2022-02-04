@@ -67,7 +67,7 @@ stages:
       
     - script: |
         ls -la $(pipeline.workspace)/adonetexample
-        zip -l $(pipeline.workspace/adonetexample/Application.zip)
+        unzip -l $(pipeline.workspace)/adonetexample/Application.zip
 
     - task: AzureCLI@2
       inputs:
