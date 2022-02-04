@@ -86,3 +86,4 @@ stages:
         WebAppName: 'adonetexample'
         packageForLinux: '$(pipeline.workspace)/**/Application.zip'
         RuntimeStack: 'DOTNETCORE|3.1'
+        StartupCommand: 'dotnet aspnet-core-dotnet-core.dll'
