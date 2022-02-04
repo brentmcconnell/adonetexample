@@ -67,6 +67,7 @@ stages:
       
     - script: |
         ls -la $(pipeline.workspace)/adonetexample
+        zip -l $(pipeline.workspace/adonetexample/Application.zip)
 
     - task: AzureCLI@2
       inputs:
@@ -83,5 +84,5 @@ stages:
         azureSubscription: 'adonetexample - Azure'
         appType: 'webAppLinux'
         WebAppName: 'adonetexample'
-        packageForLinux: '$(pipeline.workspace)/**/*.zip'
+        packageForLinux: '$(pipeline.workspace)/**/Application.zip'
         RuntimeStack: 'DOTNETCORE|3.1'
