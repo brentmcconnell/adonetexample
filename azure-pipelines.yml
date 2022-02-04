@@ -99,6 +99,6 @@ stages:
         $runSetting.RunSettings.TestRunParameters.ChildNodes.Item(0).value = 'https://adonetexample.azurewebsites.net/'
         $runSetting.Save("$(pwd)/functionalTests.runsettings")
 
-    - script: |
+    - powershell: |
         cd Application\aspnet-core-dotnet-core.FunctionalTests
         dotnet test aspnet-core-dotnet-core.FunctionalTests.csproj -s functionalTests.runsettings
