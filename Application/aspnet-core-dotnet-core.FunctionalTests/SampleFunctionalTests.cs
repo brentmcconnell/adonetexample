@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Remote;
 using System;
 using System.Threading;
@@ -21,7 +22,8 @@ namespace SampleWebApplication.FunctionalTests
         [TestInitialize]
         public void TestInit()
         {
-            driver = GetChromeDriver();
+            //driver = GetChromeDriver();
+            driver = GetEdgeDriver();
             driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(120);
         }
 
@@ -75,5 +77,21 @@ namespace SampleWebApplication.FunctionalTests
                 return new ChromeDriver(options);
             }
         }
+        
+        private RemoteWebDriver GetEdgeDriver()
+        {
+            var path = Environment.GetEnvironmentVariable("EdgeWebDriver");
+            var options = new EdgeOptions();
+            options.AddArguments("--no-sandbox");
+
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                return new EdgeDriver(path, options, TimeSpan.FromSeconds(300));
+            }
+            else
+            {
+                return new EdgeDriver(options);
+            }
+        }   
     }
 }
