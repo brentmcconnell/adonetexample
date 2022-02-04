@@ -91,7 +91,7 @@ stages:
 - stage: Function_Tests
   dependsOn: Deploy
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-2022'
   jobs:
   - job: Test
     steps:
