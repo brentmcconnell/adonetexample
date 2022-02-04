@@ -95,6 +95,11 @@ stages:
   jobs:
   - job: Test
     steps:
+    - task: VisualStudioTestPlatformInstaller@1
+      inputs:
+        packageFeedSelector: 'nugetOrg'
+        versionSelector: 'latestStable'
+
     - pwsh: |
         echo "##vso[task.prependpath]$env:CHROMEWEBDRIVER"
       displayName: Adds ChromeWebDriver for Selenium to PATH
@@ -104,8 +109,10 @@ stages:
         [xml]$runSetting = Get-Content functionalTests.runsettings
         $runSetting.RunSettings.TestRunParameters.ChildNodes.Item(0).value = 'https://adonetexample.azurewebsites.net/'
         $runSetting.Save("$(pwd)/functionalTests.runsettings")
+      displayName: Setup runsettings file
 
     - pwsh: |
         cd Application\aspnet-core-dotnet-core.FunctionalTests
         Get-Content -Path functionalTests.runsettings
         dotnet test aspnet-core-dotnet-core.FunctionalTests.csproj -s functionalTests.runsettings -v diag
+      displayName: Run Tests
