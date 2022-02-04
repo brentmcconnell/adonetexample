@@ -59,6 +59,7 @@ namespace SampleWebApplication.FunctionalTests
                     Thread.Sleep(5000);
                 }
             }
+            driver.Quit();
         }
 
         private RemoteWebDriver GetChromeDriver()
