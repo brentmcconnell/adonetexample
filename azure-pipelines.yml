@@ -90,15 +90,21 @@ stages:
 
 - stage: Function_Tests
   dependsOn: Deploy
+  pool:
+    vmImage: 'windows-2019'
   jobs:
   - job: Test
     steps:
-    - powershell: |
+    - pwsh: |
+        echo "##vso[task.prependpath]$env:CHROMEWEBDRIVER"
+      displayName: Adds ChromeWebDriver for Selenium to PATH
+
+    - pwsh: |
         cd Application\aspnet-core-dotnet-core.FunctionalTests
         [xml]$runSetting = Get-Content functionalTests.runsettings
         $runSetting.RunSettings.TestRunParameters.ChildNodes.Item(0).value = 'https://adonetexample.azurewebsites.net/'
         $runSetting.Save("$(pwd)/functionalTests.runsettings")
 
-    - powershell: |
+    - pwsh: |
         cd Application\aspnet-core-dotnet-core.FunctionalTests
         dotnet test aspnet-core-dotnet-core.FunctionalTests.csproj -s functionalTests.runsettings
