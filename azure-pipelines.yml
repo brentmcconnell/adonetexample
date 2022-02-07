@@ -114,5 +114,5 @@ stages:
     - pwsh: |
         cd Application\aspnet-core-dotnet-core.FunctionalTests
         Get-Content -Path functionalTests.runsettings
-        dotnet test aspnet-core-dotnet-core.FunctionalTests.csproj -s functionalTests.runsettings -v d
+        dotnet test aspnet-core-dotnet-core.FunctionalTests.csproj -s functionalTests.runsettings
       displayName: Run Tests
