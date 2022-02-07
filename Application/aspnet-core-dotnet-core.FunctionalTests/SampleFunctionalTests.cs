@@ -1,9 +1,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System.Linq;
 using System;
 using System.Threading;
-using System.Runtime.InteropServices;
 
 namespace SampleWebApplication.FunctionalTests
 {
@@ -23,54 +24,27 @@ namespace SampleWebApplication.FunctionalTests
         public void TestInit()
         {
             driver = GetChromeDriver();
-            driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(120);
-        }
-
-        [TestCleanup]
-        public void TestClean()
-        {
-            driver.Quit();
         }
 
         [TestMethod]
-        [Timeout(600000)]
-        public void SampleFunctionalTest1()
+        public void TestGetStarted()
         {
-            var webAppUrl = testContext.Properties["webAppUrl"].ToString();
-
-            var startTimestamp = DateTime.Now.Millisecond;
-            var endTimstamp = startTimestamp + 60 * 10 * 1000;
-
-            while (true)
+            // Chrome Driver was manually downloaded from https://sites.google.com/a/chromium.org/chromedriver/downloads
+            // parameter "." will instruct to look for the chromedriver.exe in the current folder
+            using (var driver = GetChromeDriver())
             {
-                try
-                {
-                    driver.Navigate().GoToUrl(webAppUrl);
-                    Assert.AreEqual("Home Page - ASP.NET Core", driver.Title, "Expected title to be 'Home Page - ASP.NET Core'");
-                    break;
-                }
-                catch
-                {
-                    var currentTimestamp = DateTime.Now.Millisecond;
-                    if(currentTimestamp > endTimstamp)
-                    {
-                        throw;
-                    }
-                    Thread.Sleep(5000);
-                }
-            }
-            driver.Quit();
-        }
+                var webAppUrl = testContext.Properties["webAppUrl"].ToString();
+                //Navigate to DotNet website
+                driver.Navigate().GoToUrl(webAppUrl);
+                Assert.AreEqual("Home Page - ASP.NET Core 3.1", driver.Title, "Expected title to be 'Home Page - ASP.NET Core 3.1'");
 
+            }
+        }
         private RemoteWebDriver GetChromeDriver()
         {
             var path = Environment.GetEnvironmentVariable("ChromeWebDriver");
             var options = new ChromeOptions();
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                options.AddArguments("--no-sandbox");
-            }
-            options.AddArgument("--headless");
+            options.AddArguments("headless");
 
             if (!string.IsNullOrWhiteSpace(path))
             {
@@ -80,6 +54,6 @@ namespace SampleWebApplication.FunctionalTests
             {
                 return new ChromeDriver(options);
             }
-        }  
+        }
     }
 }
